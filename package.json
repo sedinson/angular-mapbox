@@ -1,0 +1,23 @@
+{
+  "name": "angular-mapbox",
+  "version": "1.0.0",
+  "description": "AngularJS MapBox library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sedinson/angular-mapbox.git"
+  },
+  "keywords": [
+    "mapbox",
+    "angularjs"
+  ],
+  "author": "Edinson Salas <edinsonsalas@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sedinson/angular-mapbox/issues"
+  },
+  "homepage": "https://github.com/sedinson/angular-mapbox#readme"
+}
