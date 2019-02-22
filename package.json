@@ -1,5 +1,5 @@
 {
-  "name": "angular-mapbox",
+  "name": "angularjs-mapbox",
   "version": "1.0.0",
   "description": "AngularJS MapBox library",
   "main": "index.js",
@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/sedinson/angular-mapbox#readme",
   "dependencies": {
-    "angular": "^1.7.7",
-    "lodash": "^4.17.11",
+    "angular": "^1.4.1",
+    "lodash": "^3.9.3",
     "mapbox-gl": "^0.53.0"
   }
 }
