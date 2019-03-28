@@ -26,12 +26,12 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
             events: '=',
             design: '='
         },
-        template: "<div id='mapbox-gls'></div><div class='angular-mapbox-hidden' ng-transclude></div>",
-        controller: ['$scope', function ($scope) {
+        template: "<div class='angular-mapbox-gls'></div><div class='angular-mapbox-hidden' ng-transclude></div>",
+        controller: ['$scope', '$element', function ($scope, $element) {
             mapboxgl.accessToken = config.accessToken;
-
+            
             map = new mapboxgl.Map({
-                container: 'mapbox-gls', // container id
+                container: $element[0].getElementsByClassName('angular-mapbox-gls')[0], // container id
                 style: $scope.design || 'mapbox://styles/mapbox/streets-v9', // stylesheet location
                 center: $scope.center, // starting position [lon, lat]
                 zoom: $scope.zoom // starting zoom
