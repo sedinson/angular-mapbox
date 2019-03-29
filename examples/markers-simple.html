@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../angular-mapbox.css">
+    <title>Markers Simple</title>
+</head>
+<body ng-app="baseApp">
+    <h2>Simple marker example</h2>
+
+    <div ng-controller="mapController">
+        <angular-mapbox-map zoom="map.zoom" center="map.center" design="'mapbox://styles/mapbox/dark-v9'">
+        </angular-mapbox-map>
+    </div>
+
+    <script src="../node_modules/angular/angular.min.js"></script>
+    <script src="../index.js"></script>
+    <script>
+        (function () {
+            var app = angular.module('baseApp', [
+                'angularMapbox'
+            ]);
+
+            app.config(
+                [
+                    'angularMapboxConfigProvider', 
+                    function(angularMapboxConfigProvider) {
+                        angularMapboxConfigProvider.config({
+                            accessToken: '<YOUR ACCESS TOKEN>'
+                        });
+                    }
+                ]
+            );
+
+            app.controller('mapController', function($scope) {
+                $scope.map = {
+                    zoom: 12,
+                    center: [ -74.804486, 10.980780 ]
+                };
+            });
+        })();
+    </script>
+</body>
+</html>

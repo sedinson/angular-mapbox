@@ -3,7 +3,9 @@ AngularJS MapBox library
 
 ## Installation
 
-`npm install angularjs-mapbox`
+```npm
+$   npm install angularjs-mapbox
+```
 
 ## Quick Start
 1. In your html, import the library `<script src="node_modules/angularjs-mapbox/index.js"></script>`
@@ -11,7 +13,7 @@ AngularJS MapBox library
 
 ### HTML Example:
 
-```HTML
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,9 +22,10 @@ AngularJS MapBox library
 <body ng-app="baseApp">
     <h2>Your amazing site goes here</h2>
     <div ng-controller="mapController">
+        ...
     </div>
 
-    <script src = "node_modules/angular/dist/index.min.js"></script>
+    <script src = "node_modules/angular/angular.min.js"></script>
     <script src="node_modules/angularjs-mapbox/index.js"></script>
     <script src="/path/to/your/javascript.js"></script>
 </body>
@@ -30,17 +33,14 @@ AngularJS MapBox library
 ```
 
 3. Import in the global modules' section:
-```Javascript
+```js
 var app = angular.module('baseApp', [
     'angularMapbox'
 ]);
 ```
 
 4. Add the key in the config section:
-```Javascript
-/**
- * Config
- */
+```js
 app.config(
     [
         'angularMapboxConfigProvider', 
@@ -54,7 +54,7 @@ app.config(
 ```
 
 5. In your controller, declare some variables you'll use in the map for center and zoom
-```Javascript
+```js
 app.controller('mapController', function($scope) {
     $scope.map = {
         zoom: 12,
@@ -64,7 +64,7 @@ app.controller('mapController', function($scope) {
 ```
 
 6. Create a new map!
-```HTML
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,7 +77,7 @@ app.controller('mapController', function($scope) {
         </angular-mapbox-map>
     </div>
 
-    <script src="node_modules/angular/index.js"></script>
+    <script src="node_modules/angular/angular.min.js"></script>
     <script src="node_modules/angularjs-mapbox/index.js"></script>
     <script src="/path/to/your/javascript.js"></script>
 </body>
@@ -86,13 +86,13 @@ app.controller('mapController', function($scope) {
 
 ## Marker Example
 You can create one or more markers in the map:
-```HTML
+```html
 <angular-mapbox-map zoom="map.zoom" center="map.center" design="'mapbox://styles/mapbox/dark-v9'">
     <angular-mapbox-marker ng-repeat="marker in markers" model="marker" identificator="'id'"></angular-mapbox-marker>
 </angular-mapbox-map>
 ```
 
-```Javascript
+```js
 app.controller('mapController', function($scope) {
     $scope.map = {
         zoom: 12,

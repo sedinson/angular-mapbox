@@ -22,7 +22,7 @@
   "homepage": "https://github.com/sedinson/angular-mapbox#readme",
   "dependencies": {
     "angular": "^1.4.1",
-    "lodash": "^3.9.3",
+    "lodash": "^4.17.11",
     "mapbox-gl": "^0.53.0"
   }
 }
