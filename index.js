@@ -1,8 +1,3 @@
-require('angular');
-
-var mapboxgl = require('mapbox-gl/dist/mapbox-gl'),
-    _ = require('lodash');
-
 var config = {},
     map = null,
     markers = {};
@@ -32,12 +27,12 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
             
             map = new mapboxgl.Map({
                 container: $element[0].getElementsByClassName('angular-mapbox-gls')[0], // container id
-                style: $scope.design || 'mapbox://styles/mapbox/streets-v9', // stylesheet location
+                style: $scope.design, // stylesheet location
                 center: $scope.center, // starting position [lon, lat]
                 zoom: $scope.zoom // starting zoom
             });
 
-            _.each(Object.keys($scope.events || {}), function (event) {
+            Object.keys($scope.events || {}).forEach(function (event) {
                 map.on(event, function (e) {
                     $scope.events[event](map, e);
                 });
@@ -58,7 +53,8 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
         template: '<div ng-transclude></div>',
         scope: {
             model: '=',
-            events: '='
+            events: '=',
+            identificator: '='
         },
         controller: ['$scope', '$compile', function ($scope, $compile) {
             var identificator = $scope.identificator || 'id',
@@ -97,7 +93,7 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                         var _marker = new mapboxgl.Marker(new_marker.options);
                         _marker.setLngLat([new_marker.lon || 0, new_marker.lat || 0]);
 
-                        _.each(Object.keys($scope.events || {}), function (event) {
+                        Object.keys($scope.events || {}).forEach(function (event) {
                             if(['dragstart', 'drag', 'dragend'].indexOf(event) >= 0) {
                                 _marker.on(event, function (e) {
                                     $scope.event[event](new_marker, e);

@@ -110,3 +110,31 @@ app.controller('mapController', function($scope) {
     }];
 });
 ```
+
+You can see more examples [here](./examples)
+
+## Directive Reference
+
+
+### Map [angular-mapbox-map]
+| attribute | type    | value                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|-----------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| zoom      | numeric | The number of zoom                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| center    | array   | [longitude, latitude]                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| events    | object  | Refer to [documentation](https://docs.mapbox.com/mapbox-gl-js/api/#map.event:resize) for more information. See [examples](./examples) of how to use it.                                                                                                                                                                                                                                                                                                                         |
+| design    | string  | Some of predefined styles: - mapbox://styles/mapbox/streets-v10 - mapbox://styles/mapbox/outdoors-v10 - mapbox://styles/mapbox/light-v9 - mapbox://styles/mapbox/dark-v9 - mapbox://styles/mapbox/satellite-v9 - mapbox://styles/mapbox/satellite-streets-v10 - mapbox://styles/mapbox/navigation-preview-day-v2 - mapbox://styles/mapbox/navigation-preview-night-v2 - mapbox://styles/mapbox/navigation-guidance-day-v2 - mapbox://styles/mapbox/navigation-guidance-night-v2 |
+
+
+### Marker [angular-mapbox-marker]
+| attribute     | type   | value                                                                                                                                                                                                                                                                                                                                                     |
+|---------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| model         | object | an object with the required values: lat, lon and additional a id field that should be unique. See [examples](./examples) for more information                                                                                                                                                                                                             |
+| identificator | string | the value inside the model who has the identificator name (unique). Example: 'id'                                                                                                                                                                                                                                                                         |
+| events        | object | Refer to [documentation](https://docs.mapbox.com/mapbox-gl-js/api/#marker.event:dragstart) for more information. See [./examples](examples) of how to use it. Additional, you can set events like click to the addEventListener include on the market itself. See [this documentation](https://www.w3schools.com/jsref/met_document_addeventlistener.asp) |
+
+
+## To Do
+# [checkbox:unchecked] Finish Examples
+# [checkbox:unchecked] Finish documentation for geojson
+# [checkbox:unchecked] Finish documentation for popup
+# [checkbox:unchecked] Develop more stuff for mapboxgl library

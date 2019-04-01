@@ -5,17 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../angular-mapbox.css">
+    <style>
+        .my-map {
+            position: relative;
+            width: 600px;
+            height: 400px;
+        }
+
+        .map-marker {
+            display: block;
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            background: red;
+        }
+    </style>
     <title>Markers Simple</title>
 </head>
 <body ng-app="baseApp">
     <h2>Simple marker example</h2>
 
     <div ng-controller="mapController">
-        <angular-mapbox-map zoom="map.zoom" center="map.center" design="'mapbox://styles/mapbox/dark-v9'">
-        </angular-mapbox-map>
+        <div class="my-map">
+            <angular-mapbox-map zoom="map.zoom" center="map.center" design="'mapbox://styles/mapbox/streets-v10'">
+                <angular-mapbox-marker model="marker" identificator="'id'"></angular-mapbox-marker>
+            </angular-mapbox-map>
+        </div>
     </div>
 
     <script src="../node_modules/angular/angular.min.js"></script>
+    <script src="../node_modules/mapbox-gl/dist/mapbox-gl.js"></script>
     <script src="../index.js"></script>
     <script>
         (function () {
@@ -28,7 +47,7 @@
                     'angularMapboxConfigProvider', 
                     function(angularMapboxConfigProvider) {
                         angularMapboxConfigProvider.config({
-                            accessToken: '<YOUR ACCESS TOKEN>'
+                            accessToken: 'pk.eyJ1Ijoid2lzYW1hIiwiYSI6ImNqcndqdmc3OTBkaHUzeW5yMmFjYXVhdmoifQ.ZWxrK2vyzyrxOL6P_Bkq2g'
                         });
                     }
                 ]
@@ -39,6 +58,15 @@
                     zoom: 12,
                     center: [ -74.804486, 10.980780 ]
                 };
+
+                var marker = document.createElement('div');
+                    marker.className = 'map-marker';
+
+                $scope.marker = {
+                    id: 'marker-1',
+                    lat: 10.980780,
+                    lon: -74.804486
+                }
             });
         })();
     </script>
