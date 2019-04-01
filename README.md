@@ -134,7 +134,7 @@ You can see more examples [here](./examples)
 
 
 ## To Do
-# [checkbox:unchecked] Finish Examples
-# [checkbox:unchecked] Finish documentation for geojson
-# [checkbox:unchecked] Finish documentation for popup
-# [checkbox:unchecked] Develop more stuff for mapboxgl library
+- Finish Examples
+- Finish documentation for geojson
+- Finish documentation for popup
+- Develop more stuff for mapboxgl library
