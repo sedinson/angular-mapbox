@@ -87,7 +87,6 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
             });
 
             $scope.$watch('model', function (new_marker, old_marker) {
-                console.log("Hola mundo", new_marker, old_marker);
                 if(new_marker) {
                     id = new_marker[identificator];
                     
@@ -99,11 +98,15 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                         Object.keys($scope.events || {}).forEach(function (event) {
                             if(['dragstart', 'drag', 'dragend'].indexOf(event) >= 0) {
                                 _marker.on(event, function (e) {
-                                    $scope.event[event](new_marker, e);
+                                    $scope.$apply(function () {
+                                        $scope.event[event](new_marker, e);
+                                    });
                                 });
                             } else {
                                 _marker.getElement().addEventListener(event, function (e) {
-                                    $scope.events[event](new_marker, e);
+                                    $scope.$apply(function () {
+                                        $scope.events[event](new_marker, e);
+                                    });
                                 });
                             }
                         });
