@@ -28,13 +28,15 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
             map = new mapboxgl.Map({
                 container: $element[0].getElementsByClassName('angular-mapbox-gls')[0], // container id
                 style: $scope.design, // stylesheet location
-                center: $scope.center, // starting position [lon, lat]
+                center: $scope.center, // starting position [lng, lat]
                 zoom: $scope.zoom // starting zoom
             });
 
             Object.keys($scope.events || {}).forEach(function (event) {
                 map.on(event, function (e) {
-                    $scope.events[event](map, e);
+                    $scope.$apply(function () {
+                        $scope.events[event](map, e);
+                    });
                 });
             });
 
@@ -85,13 +87,14 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
             });
 
             $scope.$watch('model', function (new_marker, old_marker) {
+                console.log("Hola mundo", new_marker, old_marker);
                 if(new_marker) {
                     id = new_marker[identificator];
                     
                     //-- Create / Update markers
                     if(!markers[id]) {
                         var _marker = new mapboxgl.Marker(new_marker.options);
-                        _marker.setLngLat([new_marker.lon || 0, new_marker.lat || 0]);
+                        _marker.setLngLat([new_marker.lng || 0, new_marker.lat || 0]);
 
                         Object.keys($scope.events || {}).forEach(function (event) {
                             if(['dragstart', 'drag', 'dragend'].indexOf(event) >= 0) {
@@ -111,10 +114,10 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                         markers[id] = new_marker;
                         _generate();
                     } else {
-                        if(markers[id].lat != new_marker.lat || markers[id].lon != new_marker.lon) {
-                            markers[id]._mapbox_marker.setLngLat([new_marker.lon || 0, new_marker.lat || 0]);
+                        if(markers[id].lat != new_marker.lat || markers[id].lng != new_marker.lng) {
+                            markers[id]._mapbox_marker.setLngLat([new_marker.lng || 0, new_marker.lat || 0]);
                             markers[id].lat = new_marker.lat;
-                            markers[id].lon = new_marker.lon;
+                            markers[id].lng = new_marker.lng;
                         }
 
                         if(markers[id].draggable != new_marker.draggable) {

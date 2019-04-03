@@ -20,14 +20,18 @@
             background: red;
         }
     </style>
-    <title>Markers Simple</title>
+    <title>Map Event Example</title>
 </head>
 <body ng-app="baseApp">
-    <h2>Simple marker example</h2>
-
+    <h2>Map event example</h2>
     <div ng-controller="mapController">
+        <p>
+            <b>Lng</b> {{marker.lng}}
+            <b>Lat</b> {{marker.lat}}
+        </p>
+
         <div class="my-map">
-            <angular-mapbox-map zoom="map.zoom" center="map.center" design="'mapbox://styles/mapbox/streets-v10'">
+            <angular-mapbox-map zoom="map.zoom" center="map.center" events="map_events" design="'mapbox://styles/mapbox/streets-v10'">
                 <angular-mapbox-marker model="marker" identificator="'id'"></angular-mapbox-marker>
             </angular-mapbox-map>
         </div>
@@ -61,6 +65,16 @@
 
                 var marker = document.createElement('div');
                     marker.className = 'map-marker';
+
+                $scope.map_events = {
+                    click: function (map, e) {
+                        $scope.marker = {
+                            lng: e.lngLat.lng,
+                            lat: e.lngLat.lat,
+                            id: 'marker-1'
+                        };
+                    }
+                };
 
                 $scope.marker = {
                     id: 'marker-1',

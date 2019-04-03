@@ -102,11 +102,11 @@ app.controller('mapController', function($scope) {
     $scope.markers = [{
         id: 'marker-1',
         lat: -74.804486,
-        lon: 10.980780
+        lng: 10.980780
     }, {
         id: 'marker-2',
         lat: -74.812486,
-        lon: 10.985781
+        lng: 10.985781
     }];
 });
 ```
@@ -128,7 +128,7 @@ You can see more examples [here](./examples)
 ### Marker [angular-mapbox-marker]
 | attribute     | type   | value                                                                                                                                                                                                                                                                                                                                                     |
 |---------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| model         | object | an object with the required values: lat, lon and additional a id field that should be unique. See [examples](./examples) for more information                                                                                                                                                                                                             |
+| model         | object | an object with the required values: lat, lng and additional a id field that should be unique. See [examples](./examples) for more information                                                                                                                                                                                                             |
 | identificator | string | the value inside the model who has the identificator name (unique). Example: 'id'                                                                                                                                                                                                                                                                         |
 | events        | object | Refer to [documentation](https://docs.mapbox.com/mapbox-gl-js/api/#marker.event:dragstart) for more information. See [./examples](examples) of how to use it. Additional, you can set events like click to the addEventListener include on the market itself. See [this documentation](https://www.w3schools.com/jsref/met_document_addeventlistener.asp) |
 
