@@ -141,7 +141,7 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                     markers[old_marker[identificator]]._mapbox_marker && markers[old_marker[identificator]]._mapbox_marker.remove();
                     delete markers[(old_marker || {})[identificator]];
                 }
-            });
+            }, true);
 
             this.setPopup = function (template, options) {
                 template_popup = template;
@@ -186,14 +186,14 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
 
             $scope.$watch('paint', function (new_paint, old_paint) {
                 var properties = Object.keys(new_paint);
-                
+
                 for(var i=0; i<properties.length; i++) {
                     var val = properties[i];
                     if(new_paint[val] != old_paint[val]) {
                         map.setPaintProperty($scope.identificator, val, new_paint[val]);
                     }
                 }
-            });
+            }, true);
 
             map.on('load', function () {
                 map.addSource($scope.identificator, {
@@ -215,6 +215,100 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                     layout: $scope.layout,
                     paint: $scope.paint
                 });
+            });
+        }]
+    }
+}]).directive('angularMapboxCircle', [function () {
+    var radiusAtMaxZoom = function (unit, radius, latitude) {
+        switch(unit) {
+            case 'px':
+                return radius;
+            case 'km':
+                radius *= 1000;
+                break;
+        }
+
+        return radius / 0.075 / Math.cos(latitude * Math.PI / 180);
+    };
+
+    return {
+        require: '^^angularMapboxMap',
+        restrict: 'E',
+        transclude: true,
+        template: '<div ng-transclude></div>',
+        scope: {
+            identificator: '=',
+            radius: '=',
+            center: '=',
+            layout: '=',
+            paint: '=',
+            unit: '='
+        },
+        controller: ['$scope', function ($scope) {
+            var change_radius = function () {
+                map.getSource($scope.identificator) && map.setPaintProperty($scope.identificator, 'circle-radius', {
+                    stops: [
+                        [0, 0],
+                        [20, radiusAtMaxZoom($scope.unit, $scope.radius, $scope.center[0])]
+                    ],
+                    base: 2
+                });
+            };
+
+            $scope.$watch('center', function (new_data) {
+                if(new_data) {
+                    map.getSource($scope.identificator) && map.getSource($scope.identificator).setData({
+                        "type": "FeatureCollection",
+                        "features": [{
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "Point",
+                                "coordinates": $scope.center
+                            }
+                        }]
+                    });
+                }
+            }, true);
+
+            $scope.$watch('paint', function (new_paint, old_paint) {
+                var properties = Object.keys(new_paint);
+                
+                for(var i=0; i<properties.length; i++) {
+                    var val = properties[i];
+                    if(val != 'circle-radius' && new_paint[val] != old_paint[val]) {
+                        map.setPaintProperty($scope.identificator, val, new_paint[val]);
+                    }
+                }
+            }, true);
+
+            $scope.$watch('radius', function (new_radius) {
+                change_radius();
+            });
+
+            map.on('load', function () {
+                map.addSource($scope.identificator, {
+                    type: 'geojson',
+                    data: {
+                        "type": "FeatureCollection",
+                        "features": [{
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "Point",
+                                "coordinates": $scope.center
+                            }
+                        }]
+                    }
+                });
+    
+                map.addLayer({
+                    id: $scope.identificator,
+                    type: 'circle',
+                    source: $scope.identificator,
+                    layout: $scope.layout,
+                    paint: $scope.paint
+                });
+
+                change_radius();
             });
         }]
     }

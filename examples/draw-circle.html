@@ -24,7 +24,7 @@
 </head>
 <body ng-app="baseApp">
     <h2>Draw a circle</h2>
-    <p>Draw a circle in meters. To edit the circle function, you have to define the stops in the paint layer. See the functions metersToPixelsAtMaxZoom and changeRadius</p>
+    <p>Draw a circle in meters. You can change the conversion function on kilometers (km), meters (m) or pixels (px)</p>
     <div ng-controller="mapController">
         <p>
             <label>Radius (mts)</label>
@@ -33,7 +33,7 @@
 
         <div class="my-map">
             <angular-mapbox-map zoom="map.zoom" center="map.center" design="'mapbox://styles/mapbox/streets-v10'">
-                <angular-mapbox-geojson identificator="'my-radius'" type="'circle'" data="data" layout="{}" paint="paint"></angular-mapbox-geojson>
+                <angular-mapbox-circle identificator="'my-radius'" unit="'m'" center="map.center" radius="radius" layout="{}" paint="{}"></angular-mapbox-circle>
             </angular-mapbox-map>
         </div>
     </div>
@@ -43,10 +43,6 @@
     <script src="../index.js"></script>
     <script>
         (function () {
-            var metersToPixelsAtMaxZoom = function (meters, latitude) {
-                return meters / 0.075 / Math.cos(latitude * Math.PI / 180);
-            };
-
             var app = angular.module('baseApp', [
                 'angularMapbox'
             ]);
@@ -56,54 +52,19 @@
                     'angularMapboxConfigProvider', 
                     function(angularMapboxConfigProvider) {
                         angularMapboxConfigProvider.config({
-                            accessToken: '<access token>'
+                            accessToken: 'pk.eyJ1Ijoid2lzYW1hIiwiYSI6ImNqcndqdmc3OTBkaHUzeW5yMmFjYXVhdmoifQ.ZWxrK2vyzyrxOL6P_Bkq2g'
                         });
                     }
                 ]
             );
 
             app.controller('mapController', function($scope) {
-                var changeRadius = function () {
-                    $scope.paint = {
-                        "circle-radius": {
-                            stops: [
-                                [0, 0],
-                                [20, metersToPixelsAtMaxZoom($scope.radius, $scope.marker.lat)]
-                            ],
-                            base: 2
-                        }
-                    };
-                };
-
                 $scope.map = {
                     zoom: 12,
                     center: [ -74.804486, 10.980780 ]
                 };
 
                 $scope.radius = 100;
-
-                $scope.marker = {
-                    id: 'marker-1',
-                    lat: 10.980780,
-                    lng: -74.804486
-                };
-
-                $scope.data = {
-                    "type": "FeatureCollection",
-                    "features": [{
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates": [-74.804486, 10.980780]
-                        }
-                    }]
-                };
-
-                $scope.$watch('radius', function (new_value) {
-                    changeRadius();
-                });
-
-                changeRadius();
             });
         })();
     </script>
