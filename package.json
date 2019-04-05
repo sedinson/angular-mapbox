@@ -1,6 +1,6 @@
 {
   "name": "angularjs-mapbox",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "AngularJS MapBox library",
   "main": "index.js",
   "scripts": {
