@@ -184,6 +184,17 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                 }
             }, true);
 
+            $scope.$watch('paint', function (new_paint, old_paint) {
+                var properties = Object.keys(new_paint);
+                
+                for(var i=0; i<properties.length; i++) {
+                    var val = properties[i];
+                    if(new_paint[val] != old_paint[val]) {
+                        map.setPaintProperty($scope.identificator, val, new_paint[val]);
+                    }
+                }
+            });
+
             map.on('load', function () {
                 map.addSource($scope.identificator, {
                     type: 'geojson',
