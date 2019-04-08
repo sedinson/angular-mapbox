@@ -33,7 +33,7 @@
 
         <div class="my-map">
             <angular-mapbox-map zoom="map.zoom" center="map.center" design="'mapbox://styles/mapbox/streets-v10'">
-                <angular-mapbox-circle identificator="'my-radius'" unit="'m'" center="map.center" radius="radius" layout="{}" paint="{}"></angular-mapbox-circle>
+                <angular-mapbox-circle identificator="'my-radius'" unit="'m'" center="map.center" radius="radius" layout="{}" paint="{ 'circle-color': 'rgba(255,0,0,0.5)', 'circle-stroke-color': '#000', 'circle-stroke-width': 2 }"></angular-mapbox-circle>
             </angular-mapbox-map>
         </div>
     </div>
@@ -52,7 +52,7 @@
                     'angularMapboxConfigProvider', 
                     function(angularMapboxConfigProvider) {
                         angularMapboxConfigProvider.config({
-                            accessToken: 'pk.eyJ1Ijoid2lzYW1hIiwiYSI6ImNqcndqdmc3OTBkaHUzeW5yMmFjYXVhdmoifQ.ZWxrK2vyzyrxOL6P_Bkq2g'
+                            accessToken: '<access token>'
                         });
                     }
                 ]

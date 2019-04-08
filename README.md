@@ -133,6 +133,26 @@ You can see more examples [here](./examples)
 | events        | object | Refer to [documentation](https://docs.mapbox.com/mapbox-gl-js/api/#marker.event:dragstart) for more information. See [./examples](examples) of how to use it. Additional, you can set events like click to the addEventListener include on the market itself. See [this documentation](https://www.w3schools.com/jsref/met_document_addeventlistener.asp) |
 
 
+### Circle [angular-mapbox-circle]
+| attribute     | type   | value                                                                                                  |
+|---------------|--------|--------------------------------------------------------------------------------------------------------|
+| center        | Array  | An array with longitude, latitude                                                                      |
+| identificator | string | A unique name for the object. Example: 'my-circle-id'                      |
+| radius        | number | The radius of the circle (see unit)                                                                    |
+| unit          | string | unit used on the radius: px (pixels), m (meters), km (kilometers)                                      |
+| layout        | object | Options for layout (See [documentation](https://docs.mapbox.com/help/glossary/layout-paint-property/)) |
+| paint         | object | Options for paint (See [documentation](https://docs.mapbox.com/help/glossary/layout-paint-property/))  |
+
+
+### GeoJSON [angular-mapbox-geojson]
+| attribute     | type   | value                                                                                                                        |
+|---------------|--------|------------------------------------------------------------------------------------------------------------------------------|
+| identificator | string | the value inside the model who has the identificator name (unique). Example: 'id'                                            |
+| type          | string | The type of the Layer you want to create (See [documentation](https://docs.mapbox.com/help/glossary/layout-paint-property/)) |
+| data          | object | The source of the geojson. See [documentation](https://docs.mapbox.com/mapbox-gl-js/api/#geojsonsource)                      |
+| layout        | object | Options for layout (See [documentation](https://docs.mapbox.com/help/glossary/layout-paint-property/))                       |
+| paint         | object | Options for paint (See [documentation](https://docs.mapbox.com/help/glossary/layout-paint-property/))                        |
+
 ## To Do
 - Finish Examples
 - Finish documentation for geojson

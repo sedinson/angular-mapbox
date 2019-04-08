@@ -285,6 +285,10 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                 change_radius();
             });
 
+            $scope.$watch('unit', function (new_unit) {
+                change_radius();
+            });
+
             map.on('load', function () {
                 map.addSource($scope.identificator, {
                     type: 'geojson',
