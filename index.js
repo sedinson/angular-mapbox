@@ -249,7 +249,7 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                 map.getSource($scope.identificator) && map.setPaintProperty($scope.identificator, 'circle-radius', {
                     stops: [
                         [0, 0],
-                        [20, radiusAtMaxZoom($scope.unit, $scope.radius, $scope.center[0])]
+                        [20, radiusAtMaxZoom($scope.unit, $scope.radius, $scope.center[1])]
                     ],
                     base: 2
                 });
