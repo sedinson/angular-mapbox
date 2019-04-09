@@ -141,7 +141,7 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                     markers[old_marker[identificator]]._mapbox_marker && markers[old_marker[identificator]]._mapbox_marker.remove();
                     delete markers[(old_marker || {})[identificator]];
                 }
-            }, true);
+            });
 
             this.setPopup = function (template, options) {
                 template_popup = template;
