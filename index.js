@@ -1,5 +1,6 @@
 var config = {},
     map = null,
+    is_loaded = false,
     markers = {};
 
 angular.module('angularMapbox', []).provider('angularMapboxConfig', function () {
@@ -30,6 +31,10 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                 style: $scope.design, // stylesheet location
                 center: $scope.center, // starting position [lng, lat]
                 zoom: $scope.zoom // starting zoom
+            });
+
+            map.on('load', function () {
+                is_loaded = true;
             });
 
             Object.keys($scope.events || {}).forEach(function (event) {
@@ -195,8 +200,13 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                 }
             }, true);
 
-            map.on('load', function () {
-                map.addSource($scope.identificator, {
+            $scope.$on('$destroy', function () {
+                map.removeLayer($scope.identificator);
+                map.removeSource($scope.identificator);
+            });
+
+            var onMapLoad = function () {
+                !map.getSource($scope.identificator)? map.addSource($scope.identificator, {
                     type: 'geojson',
                     data: $scope.data || {
                         "type": "Feature",
@@ -206,16 +216,22 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                             "coordinates": []
                         }
                     }
-                });
+                }) : map.getSource($scope.identificator).setData($scope.data);
     
-                map.addLayer({
+                !map.getLayer($scope.identificator) && map.addLayer({
                     id: $scope.identificator,
                     type: $scope.type,
                     source: $scope.identificator,
                     layout: $scope.layout,
                     paint: $scope.paint
                 });
-            });
+            };
+
+            if(is_loaded) {
+                onMapLoad();
+            } else {
+                map.on('load', onMapLoad);
+            }
         }]
     }
 }]).directive('angularMapboxCircle', [function () {
@@ -255,7 +271,8 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                 });
             };
 
-            $scope.$watch('center', function (new_data) {
+            $scope.$watch('center', function (new_data, old_data) {
+                console.log("Changed", new_data, old_data);
                 if(new_data) {
                     map.getSource($scope.identificator) && map.getSource($scope.identificator).setData({
                         "type": "FeatureCollection",
@@ -289,8 +306,13 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                 change_radius();
             });
 
-            map.on('load', function () {
-                map.addSource($scope.identificator, {
+            $scope.$on('$destroy', function () {
+                map.removeLayer($scope.identificator);
+                map.removeSource($scope.identificator);
+            });
+
+            var onMapLoad = function () {
+                !map.getSource($scope.identificator)? map.addSource($scope.identificator, {
                     type: 'geojson',
                     data: {
                         "type": "FeatureCollection",
@@ -302,9 +324,18 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                             }
                         }]
                     }
+                }) : map.getSource($scope.identificator).setData({
+                    "type": "FeatureCollection",
+                    "features": [{
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": $scope.center
+                        }
+                    }]
                 });
     
-                map.addLayer({
+                !map.getLayer($scope.identificator) && map.addLayer({
                     id: $scope.identificator,
                     type: 'circle',
                     source: $scope.identificator,
@@ -313,7 +344,13 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                 });
 
                 change_radius();
-            });
+            };
+
+            if(is_loaded) {
+                onMapLoad();
+            } else {
+                map.on('load', onMapLoad);
+            }
         }]
     }
 }]);
