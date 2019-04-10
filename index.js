@@ -272,7 +272,6 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
             };
 
             $scope.$watch('center', function (new_data, old_data) {
-                console.log("Changed", new_data, old_data);
                 if(new_data) {
                     map.getSource($scope.identificator) && map.getSource($scope.identificator).setData({
                         "type": "FeatureCollection",
