@@ -1,7 +1,13 @@
 var config = {},
-    map = null,
-    is_loaded = false,
     markers = {};
+
+var obtain = function (scope, what) {
+    if(scope[what]) {
+        return scope[what];
+    }
+
+    return obtain(scope.$parent, what);
+};
 
 angular.module('angularMapbox', []).provider('angularMapboxConfig', function () {
     return {
@@ -25,30 +31,31 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
         template: "<div class='angular-mapbox-gls'></div><div class='angular-mapbox-hidden' ng-transclude></div>",
         controller: ['$scope', '$element', function ($scope, $element) {
             mapboxgl.accessToken = config.accessToken;
-            
-            map = new mapboxgl.Map({
+            $scope.mapbox_map = new mapboxgl.Map({
                 container: $element[0].getElementsByClassName('angular-mapbox-gls')[0], // container id
                 style: $scope.design, // stylesheet location
                 center: $scope.center, // starting position [lng, lat]
                 zoom: $scope.zoom // starting zoom
             });
 
-            map.on('load', function () {
-                is_loaded = true;
-            });
+            $scope.mapbox_markers = {};
 
             Object.keys($scope.events || {}).forEach(function (event) {
-                map.on(event, function (e) {
+                $scope.mapbox_map.on(event, function (e) {
                     $scope.$apply(function () {
-                        $scope.events[event](map, e);
+                        $scope.events[event]($scope.mapbox_map, e);
                     });
                 });
             });
 
             $scope.$watch('center', function (new_center) {
                 if(Array.isArray(new_center) && (new_center[0] || 0) != 0 && (new_center[1] || 0) != 0) {
-                    map.panTo(new_center);
+                    $scope.mapbox_map.panTo(new_center);
                 }
+            });
+
+            $scope.$on('$destroy', function() {
+                $scope.mapbox_map.remove();
             });
         }]
     }
@@ -69,6 +76,9 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                 template_popup = null,
                 options_popup = null,
                 _popup = null;
+
+            var map = obtain($scope.$parent, 'mapbox_map'),
+                markers = obtain($scope.$parent, 'mapbox_markers');
 
             var _generate = function () {
                 var content = $compile(template_popup)($scope),
@@ -183,6 +193,8 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
             paint: '='
         },
         controller: ['$scope', function ($scope) {
+            var map = obtain($scope.$parent, 'mapbox_map');
+
             $scope.$watch('data', function (new_data) {
                 if(new_data) {
                     map.getSource($scope.identificator) && map.getSource($scope.identificator).setData(new_data);
@@ -201,11 +213,16 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
             }, true);
 
             $scope.$on('$destroy', function () {
-                map.removeLayer($scope.identificator);
-                map.removeSource($scope.identificator);
+                if(map.getLayer($scope.identificator)) {
+                    map.removeLayer($scope.identificator);
+                    map.removeSource($scope.identificator);
+                }
             });
 
-            var onMapLoad = function () {
+            var is_loaded = false,
+            onMapLoad = function () {
+                is_loaded = true;
+
                 !map.getSource($scope.identificator)? map.addSource($scope.identificator, {
                     type: 'geojson',
                     data: $scope.data || {
@@ -261,6 +278,8 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
             unit: '='
         },
         controller: ['$scope', function ($scope) {
+            var map = obtain($scope.$parent, 'mapbox_map');
+
             var change_radius = function () {
                 map.getSource($scope.identificator) && map.setPaintProperty($scope.identificator, 'circle-radius', {
                     stops: [
@@ -306,11 +325,16 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
             });
 
             $scope.$on('$destroy', function () {
-                map.removeLayer($scope.identificator);
-                map.removeSource($scope.identificator);
+                if(map.getLayer($scope.identificator)) {
+                    map.removeLayer($scope.identificator);
+                    map.removeSource($scope.identificator);
+                }
             });
 
-            var onMapLoad = function () {
+            var is_loaded = false,
+            onMapLoad = function () {
+                is_loaded = true;
+                
                 !map.getSource($scope.identificator)? map.addSource($scope.identificator, {
                     type: 'geojson',
                     data: {
