@@ -26,7 +26,8 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
             zoom: '=',
             center: '=',
             events: '=',
-            design: '='
+            design: '=',
+            controls: '='
         },
         template: "<div class='angular-mapbox-gls'></div><div class='angular-mapbox-hidden' ng-transclude></div>",
         controller: ['$scope', '$element', function ($scope, $element) {
@@ -47,6 +48,19 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                     });
                 });
             });
+
+            var natives = ['NavigationControl', 'GeolocateControl', 'AttributionControl', 'ScaleControl', 'FullscreenControl'];
+
+            for(var key in $scope.controls) {
+                $scope.controls[key].options = $scope.controls[key].options || {};
+
+                if(natives.indexOf(key) >= 0) {
+                    $scope.mapbox_map.addControl(new mapboxgl[key]($scope.controls[key].options), $scope.controls[key].position);
+                } else {
+                    $scope.controls[key].options.accessToken = mapboxgl.accessToken;
+                    $scope.mapbox_map.addControl(new window[key]($scope.controls[key].options), $scope.controls[key].position);
+                }
+            };
 
             $scope.$watch('center', function (new_center) {
                 if(Array.isArray(new_center) && (new_center[0] || 0) != 0 && (new_center[1] || 0) != 0) {

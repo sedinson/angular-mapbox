@@ -27,7 +27,7 @@
 
     <div ng-controller="mapController">
         <div class="my-map">
-            <angular-mapbox-map zoom="map.zoom" center="map.center" design="'mapbox://styles/mapbox/streets-v10'">
+            <angular-mapbox-map zoom="map.zoom" center="map.center" design="'mapbox://styles/mapbox/streets-v10'" controls="{ NavigationControl: { options: { visualizePitch: true }, position: 'top-left' }, GeolocateControl: { positionOptions: { enableHighAccuracy: true }, trackUserLocation: true } }">
                 <angular-mapbox-marker model="marker" identificator="'id'"></angular-mapbox-marker>
             </angular-mapbox-map>
         </div>
