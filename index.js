@@ -68,6 +68,10 @@ angular.module('angularMapbox', []).provider('angularMapboxConfig', function () 
                 }
             });
 
+            $scope.$watch('design', function (new_design) {
+                $scope.mapbox_map.setStyle(new_design);
+            });
+
             $scope.$on('$destroy', function() {
                 $scope.mapbox_map.remove();
             });
